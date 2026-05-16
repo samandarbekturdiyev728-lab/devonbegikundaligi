@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turdiyev Samandarbek — Tarixchi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0D0805;
+  --bg2: #140C08;
+  --bg3: #1C110C;
+  --gold: #C9A84C;
+  --gold2: #E8C96A;
+  --gold3: #A07830;
+  --cream: #F0E6CC;
+  --cream2: #D4C4A0;
+  --red: #8B1A1A;
+  --red2: #A52020;
+  --text: #E8D8B8;
+  --text2: #B8A888;
+  --border: rgba(201,168,76,0.2);
+  --border2: rgba(201,168,76,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold3); border-radius:3px; }
+
+/* NOISE OVERLAY */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:0.4;
+}
+
+/* ===== LOADING ===== */
+#loader {
+  position:fixed; inset:0; background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:10000; transition:opacity 0.8s;
+}
+#loader .seal {
+  width:120px; height:120px;
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IM Fell English', serif;
+  font-size:48px; color:var(--gold);
+  animation: rotate 3s linear infinite;
+  position:relative;
+}
+#loader .seal::before {
+  content:'✦ DEVONBEGI KUNDALIGI ✦';
+  position:absolute;
+  font-size:7px; color:var(--gold3);
+  width:100%; text-align:center;
+  letter-spacing:2px;
+  animation: counter-rotate 3s linear infinite;
+}
+@keyframes rotate { to { transform:rotate(360deg); } }
+@keyframes counter-rotate { to { transform:rotate(-360deg); } }
+#loader p { margin-top:20px; color:var(--gold3); font-size:12px; letter-spacing:4px; text-transform:uppercase; }
+
+/* ===== HEADER ===== */
+header {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  padding:0 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:70px;
+  background: linear-gradient(to bottom, rgba(13,8,5,0.98), rgba(13,8,5,0));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.logo {
+  font-family:'IM Fell English', serif;
+  font-size:20px; color:var(--gold);
+  text-decoration:none;
+  display:flex; align-items:center; gap:12px;
+}
+.logo-icon {
+  width:36px; height:36px;
+  border:1px solid var(--gold3);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+}
+nav { display:flex; gap:28px; align-items:center; }
+nav a {
+  color:var(--text2); text-decoration:none;
+  font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  transition:color 0.3s;
+  position:relative; cursor:pointer;
+}
+nav a:hover, nav a.active { color:var(--gold); }
+nav a::after {
+  content:''; position:absolute; bottom:-4px; left:0; right:100%;
+  height:1px; background:var(--gold);
+  transition:right 0.3s;
+}
+nav a:hover::after { right:0; }
+.header-right { display:flex; align-items:center; gap:16px; }
+
+/* LANG */
+.lang-switcher { display:flex; gap:6px; }
+.lang-btn {
+  padding:4px 10px; font-size:10px; letter-spacing:1.5px;
+  border:1px solid var(--border);
+  background:transparent; color:var(--text2);
+  cursor:pointer; border-radius:2px; transition:all 0.3s;
+  font-family:'Jost', sans-serif; text-transform:uppercase;
+}
+.lang-btn.active, .lang-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(201,168,76,0.08); }
+
+/* SOCIALS */
+.social-links { display:flex; gap:12px; }
+.social-links a {
+  width:32px; height:32px;
+  border:1px solid var(--border);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  color:var(--text2); text-decoration:none; font-size:13px;
+  transition:all 0.3s;
+}
+.social-links a:hover { border-color:var(--gold); color:var(--gold); background:rgba(201,168,76,0.1); }
+
+.admin-btn {
+  padding:6px 16px; font-size:10px; letter-spacing:2px;
+  border:1px solid var(--red); color:var(--red);
+  background:transparent; cursor:pointer; border-radius:2px;
+  text-transform:uppercase; font-family:'Jost',sans-serif;
+  transition:all 0.3s;
+}
+.admin-btn:hover { background:var(--red); color:white; }
+
+/* ===== HERO ===== */
+#hero {
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+  padding:100px 40px 60px;
+  text-align:center;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse at center, #2A1508 0%, #0D0805 70%);
+}
+.hero-bg::before {
+  content:'';
+  position:absolute; inset:0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(139,26,26,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(201,168,76,0.08) 0%, transparent 50%);
+}
+.ornament {
+  font-size:11px; letter-spacing:6px; color:var(--gold3);
+  text-transform:uppercase; margin-bottom:24px;
+  display:flex; align-items:center; gap:16px;
+}
+.ornament::before, .ornament::after {
+  content:''; flex:1; max-width:80px;
+  height:1px; background: linear-gradient(to right, transparent, var(--gold3));
+}
+.ornament::after { transform:scaleX(-1); }
+.hero-title {
+  font-family:'Playfair Display', serif;
+  font-size:clamp(48px, 8vw, 100px);
+  font-weight:900; line-height:0.9;
+  color:var(--cream);
+  letter-spacing:-2px;
+  position:relative;
+}
+.hero-title span { color:var(--gold); font-style:italic; }
+.hero-subtitle {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(16px, 2.5vw, 22px);
+  color:var(--text2); margin-top:20px;
+  font-style:italic; letter-spacing:1px;
+}
+.hero-divider {
+  width:200px; height:1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin:30px auto;
+}
+.hero-desc {
+  max-width:600px; font-size:14px; line-height:1.9;
+  color:var(--text2); margin:0 auto 40px;
+}
+.hero-stats {
+  display:flex; gap:48px; justify-content:center; margin-bottom:48px;
+}
+.stat { text-align:center; }
+.stat-num {
+  font-family:'Playfair Display', serif;
+  font-size:36px; color:var(--gold); font-weight:700;
+}
+.stat-label { font-size:11px; letter-spacing:2px; color:var(--text2); text-transform:uppercase; }
+.hero-cta {
+  display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+}
+.btn-gold {
+  padding:14px 32px; background: linear-gradient(135deg, var(--gold3), var(--gold));
+  color:var(--bg); font-size:11px; letter-spacing:3px; text-transform:uppercase;
+  border:none; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition:all 0.3s;
+}
+.btn-gold:hover { background: linear-gradient(135deg, var(--gold), var(--gold2)); transform:translateY(-2px); }
+.btn-outline {
+  padding:13px 32px; background:transparent;
+  color:var(--gold); font-size:11px; letter-spacing:3px; text-transform:uppercase;
+  border:1px solid var(--gold3); cursor:pointer; font-family:'Jost',sans-serif;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition:all 0.3s;
+}
+.btn-outline:hover { background:rgba(201,168,76,0.1); transform:translateY(-2px); }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position:absolute; bottom:30px; left:50%;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:var(--gold3); font-size:10px; letter-spacing:3px;
+}
+.scroll-hint::after {
+  content:'';
+  width:1px; height:40px;
+  background: linear-gradient(to bottom, var(--gold3), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+@keyframes scroll-pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+/* ===== SECTIONS ===== */
+section { padding:80px 40px; }
+.section-head {
+  text-align:center; margin-bottom:60px;
+}
+.section-tag {
+  font-size:10px; letter-spacing:5px; color:var(--gold3);
+  text-transform:uppercase; display:block; margin-bottom:12px;
+}
+.section-title {
+  font-family:'Playfair Display', serif;
+  font-size:clamp(28px, 4vw, 48px); color:var(--cream);
+  font-weight:700;
+}
+.section-title span { color:var(--gold); font-style:italic; }
+.section-line {
+  width:80px; height:2px; margin:16px auto 0;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.section-desc {
+  color:var(--text2); font-size:14px; margin-top:16px;
+  font-family:'Cormorant Garamond', serif; font-size:18px; font-style:italic;
+}
+
+/* ===== VIDEOS ===== */
+#videos { background: var(--bg2); }
+.videos-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
+  gap:24px; max-width:1200px; margin:0 auto;
+}
+.video-card {
+  background: var(--bg3);
+  border:1px solid var(--border);
+  overflow:hidden; position:relative;
+  transition:all 0.3s; cursor:pointer;
+}
+.video-card:hover { border-color:var(--gold3); transform:translateY(-4px); }
+.video-thumb {
+  aspect-ratio:16/9; position:relative; overflow:hidden;
+  background:#1a0e08;
+}
+.video-thumb iframe { width:100%; height:100%; border:none; }
+.video-thumb .play-overlay {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.5);
+  transition:opacity 0.3s;
+}
+.play-btn {
+  width:60px; height:60px;
+  border:2px solid var(--gold);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  color:var(--gold); font-size:20px;
+}
+.video-info { padding:16px; }
+.video-info h3 {
+  font-family:'Playfair Display', serif;
+  font-size:16px; color:var(--cream); margin-bottom:6px;
+  line-height:1.4;
+}
+.video-info p { font-size:12px; color:var(--text2); }
+.video-meta { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:var(--gold3); }
+
+/* ===== BOOKS / ARTICLES ===== */
+#library { background: var(--bg); }
+.lib-tabs {
+  display:flex; gap:0; justify-content:center; margin-bottom:40px;
+  border:1px solid var(--border); display:inline-flex;
+  margin:0 auto 40px; display:flex; width:fit-content; margin:0 auto 40px;
+}
+.lib-tab {
+  padding:10px 24px; font-size:11px; letter-spacing:2px;
+  text-transform:uppercase; cursor:pointer;
+  background:transparent; color:var(--text2);
+  border:none; font-family:'Jost',sans-serif;
+  transition:all 0.3s; border-right:1px solid var(--border);
+}
+.lib-tab:last-child { border-right:none; }
+.lib-tab.active { background:rgba(201,168,76,0.15); color:var(--gold); }
+.lib-tab:hover { color:var(--gold); }
+.library-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+  gap:20px; max-width:1200px; margin:0 auto;
+}
+.book-card {
+  background:var(--bg3); border:1px solid var(--border);
+  padding:20px; text-align:center; cursor:pointer;
+  transition:all 0.3s;
+}
+.book-card:hover { border-color:var(--gold3); transform:translateY(-4px); }
+.book-icon {
+  font-size:40px; color:var(--gold3); margin-bottom:12px;
+  display:block;
+}
+.book-card h4 {
+  font-family:'Playfair Display', serif;
+  font-size:14px; color:var(--cream); margin-bottom:6px;
+  line-height:1.4;
+}
+.book-card p { font-size:11px; color:var(--text2); }
+.book-tag {
+  display:inline-block; margin-top:10px;
+  padding:3px 10px; font-size:10px; letter-spacing:1px;
+  border:1px solid var(--gold3); color:var(--gold3);
+  text-transform:uppercase;
+}
+
+/* ===== GALLERY ===== */
+#gallery { background:var(--bg2); }
+.gallery-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+  gap:3px; max-width:1200px; margin:0 auto;
+}
+.gallery-item {
+  aspect-ratio:1; background:var(--bg3);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; cursor:pointer; position:relative;
+  transition:all 0.3s;
+}
+.gallery-item:hover { border-color:var(--gold); }
+.gallery-item img { width:100%; height:100%; object-fit:cover; transition:transform 0.4s; }
+.gallery-item:hover img { transform:scale(1.05); }
+.gallery-overlay {
+  position:absolute; inset:0;
+  background:rgba(13,8,5,0.7);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity 0.3s;
+}
+.gallery-item:hover .gallery-overlay { opacity:1; }
+.gallery-overlay i { font-size:24px; color:var(--gold); }
+.gallery-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; color:var(--gold3);
+}
+.gallery-placeholder i { font-size:32px; }
+.gallery-placeholder span { font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+
+/* ===== GAMES ===== */
+#games { background:var(--bg); }
+.games-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:24px; max-width:1200px; margin:0 auto;
+}
+.game-card {
+  background:var(--bg3); border:1px solid var(--border);
+  overflow:hidden; cursor:pointer; transition:all 0.3s;
+  position:relative;
+}
+.game-card:hover { border-color:var(--red2); transform:translateY(-4px); }
+.game-header {
+  padding:24px; background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  text-align:center;
+}
+.game-icon { font-size:48px; display:block; margin-bottom:12px; }
+.game-card h3 {
+  font-family:'Playfair Display', serif;
+  font-size:20px; color:var(--cream); margin-bottom:6px;
+}
+.game-card p { font-size:12px; color:var(--text2); line-height:1.7; padding:0 16px 16px; }
+.game-badge {
+  position:absolute; top:12px; right:12px;
+  padding:3px 10px; font-size:10px;
+  background: var(--red); color:white;
+  text-transform:uppercase; letter-spacing:1px;
+}
+.play-game-btn {
+  display:block; margin:0 16px 16px;
+  padding:10px; text-align:center;
+  background:linear-gradient(135deg, var(--red), var(--red2));
+  color:white; font-size:11px; letter-spacing:2px;
+  text-transform:uppercase; cursor:pointer;
+  border:none; width:calc(100% - 32px); font-family:'Jost',sans-serif;
+  transition:opacity 0.3s;
+}
+.play-game-btn:hover { opacity:0.8; }
+
+/* ===== GAME MODAL ===== */
+.game-modal {
+  display:none; position:fixed; inset:0; z-index:2000;
+  background:rgba(0,0,0,0.9); align-items:center; justify-content:center;
+}
+.game-modal.open { display:flex; }
+.game-container {
+  background:var(--bg2); border:1px solid var(--border2);
+  width:90%; max-width:800px; max-height:90vh; overflow:auto;
+  position:relative; padding:40px;
+}
+.close-modal {
+  position:absolute; top:16px; right:16px;
+  background:transparent; border:1px solid var(--border);
+  color:var(--text2); width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:14px; transition:all 0.3s;
+}
+.close-modal:hover { border-color:var(--gold); color:var(--gold); }
+
+/* QUIZ GAME */
+.quiz-q {
+  font-family:'Playfair Display', serif;
+  font-size:22px; color:var(--cream); margin-bottom:24px; line-height:1.5;
+}
+.quiz-options { display:grid; gap:12px; }
+.quiz-opt {
+  padding:14px 20px; background:var(--bg3);
+  border:1px solid var(--border); color:var(--text);
+  cursor:pointer; font-size:14px; text-align:left;
+  transition:all 0.2s; font-family:'Jost',sans-serif;
+}
+.quiz-opt:hover { border-color:var(--gold3); color:var(--gold); }
+.quiz-opt.correct { border-color:#2ecc71; background:rgba(46,204,113,0.1); color:#2ecc71; }
+.quiz-opt.wrong { border-color:#e74c3c; background:rgba(231,76,60,0.1); color:#e74c3c; }
+.quiz-score {
+  font-family:'Playfair Display', serif;
+  font-size:48px; color:var(--gold); text-align:center; margin:20px 0;
+}
+.quiz-progress { display:flex; gap:6px; margin-bottom:24px; }
+.quiz-dot { flex:1; height:4px; background:var(--border); border-radius:2px; }
+.quiz-dot.done { background:var(--gold); }
+
+/* TIMELINE GAME */
+.timeline-game .tl-item {
+  display:flex; gap:20px; padding:16px;
+  background:var(--bg3); border:1px solid var(--border);
+  margin-bottom:10px; cursor:grab; align-items:center;
+  transition:all 0.2s;
+}
+.timeline-game .tl-item:hover { border-color:var(--gold3); }
+.tl-year { font-family:'Playfair Display', serif; font-size:20px; color:var(--gold); min-width:60px; }
+.tl-event { font-size:14px; color:var(--text); }
+
+/* MAP GAME */
+.map-game { text-align:center; }
+.map-canvas {
+  width:100%; height:300px;
+  background:var(--bg3); border:1px solid var(--border);
+  margin:20px 0; position:relative; overflow:hidden;
+}
+.map-point {
+  position:absolute; width:16px; height:16px;
+  border-radius:50%; cursor:pointer;
+  border:2px solid var(--gold); background:var(--red);
+  transform:translate(-50%,-50%);
+  transition:all 0.2s;
+}
+.map-point:hover { transform:translate(-50%,-50%) scale(1.4); }
+.map-point.selected { background:var(--gold); }
+
+/* ===== ABOUT ===== */
+#about { background:var(--bg2); }
+.about-inner {
+  max-width:900px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 2fr; gap:48px; align-items:start;
+}
+.about-portrait {
+  aspect-ratio:3/4; background:var(--bg3);
+  border:1px solid var(--border2);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.about-portrait::before {
+  content:''; position:absolute;
+  inset:8px; border:1px solid var(--border);
+}
+.portrait-placeholder { font-size:80px; color:var(--gold3); }
+.about-text { }
+.about-name {
+  font-family:'Playfair Display', serif;
+  font-size:36px; color:var(--cream); margin-bottom:4px;
+}
+.about-role {
+  font-size:12px; letter-spacing:4px; color:var(--gold);
+  text-transform:uppercase; margin-bottom:20px;
+}
+.about-bio {
+  font-family:'Cormorant Garamond', serif;
+  font-size:18px; line-height:1.8; color:var(--text2);
+  margin-bottom:20px;
+}
+.skills-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.skill-tag {
+  padding:6px 14px; border:1px solid var(--border);
+  font-size:11px; letter-spacing:1.5px; color:var(--text2);
+  text-transform:uppercase;
+}
+
+/* ===== CONTACT / SOCIAL ===== */
+#connect { background:var(--bg); }
+.social-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+  gap:20px; max-width:800px; margin:0 auto;
+}
+.social-card {
+  padding:32px 20px; border:1px solid var(--border);
+  text-align:center; text-decoration:none;
+  transition:all 0.3s; background:var(--bg3);
+  display:block;
+}
+.social-card:hover { transform:translateY(-6px); }
+.social-card.yt:hover { border-color:#FF0000; }
+.social-card.tg:hover { border-color:#0088cc; }
+.social-card.ig:hover { border-color:#E1306C; }
+.social-icon { font-size:40px; margin-bottom:12px; display:block; }
+.social-card.yt .social-icon { color:#FF0000; }
+.social-card.tg .social-icon { color:#0088cc; }
+.social-card.ig .social-icon { color:#E1306C; }
+.social-card h4 { font-family:'Playfair Display', serif; font-size:18px; color:var(--cream); margin-bottom:4px; }
+.social-card p { font-size:12px; color:var(--text2); }
+
+/* ===== FOOTER ===== */
+footer {
+  background:var(--bg); border-top:1px solid var(--border);
+  padding:40px; text-align:center;
+}
+.footer-logo {
+  font-family:'IM Fell English', serif;
+  font-size:28px; color:var(--gold); margin-bottom:8px;
+}
+.footer-sub { font-size:11px; color:var(--text2); letter-spacing:2px; margin-bottom:24px; }
+.footer-links { display:flex; gap:24px; justify-content:center; margin-bottom:20px; }
+.footer-links a { color:var(--text2); font-size:12px; text-decoration:none; transition:color 0.3s; cursor:pointer; }
+.footer-links a:hover { color:var(--gold); }
+.footer-copy { font-size:11px; color:var(--gold3); }
+
+/* ===== ADMIN MODAL ===== */
+#admin-modal {
+  display:none; position:fixed; inset:0; z-index:3000;
+  background:rgba(0,0,0,0.95); align-items:center; justify-content:center;
+}
+#admin-modal.open { display:flex; }
+.admin-panel {
+  background:var(--bg2); border:1px solid var(--border2);
+  width:95%; max-width:960px; max-height:90vh;
+  overflow:auto; position:relative;
+}
+.admin-header {
+  padding:24px 32px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.admin-header h2 {
+  font-family:'Playfair Display', serif;
+  font-size:24px; color:var(--cream);
+}
+.admin-body { padding:32px; }
+.admin-login-form { max-width:360px; margin:0 auto; text-align:center; }
+.admin-login-form h3 { font-family:'Playfair Display', serif; font-size:24px; color:var(--cream); margin-bottom:24px; }
+.form-group { margin-bottom:16px; text-align:left; }
+.form-group label { display:block; font-size:11px; letter-spacing:2px; color:var(--text2); text-transform:uppercase; margin-bottom:6px; }
+.form-group input, .form-group select, .form-group textarea {
+  width:100%; padding:12px 16px;
+  background:var(--bg3); border:1px solid var(--border);
+  color:var(--text); font-family:'Jost',sans-serif; font-size:14px;
+  outline:none; transition:border-color 0.3s;
+}
+.form-group input:focus, .form-group textarea:focus { border-color:var(--gold3); }
+.form-group textarea { resize:vertical; min-height:80px; }
+
+/* ADMIN TABS */
+.admin-tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:24px; }
+.admin-tab {
+  padding:12px 20px; font-size:11px; letter-spacing:2px;
+  text-transform:uppercase; cursor:pointer;
+  background:transparent; color:var(--text2);
+  border:none; font-family:'Jost',sans-serif;
+  transition:all 0.3s; border-bottom:2px solid transparent;
+  position:relative; bottom:-1px;
+}
+.admin-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+.admin-tab-content { display:none; }
+.admin-tab-content.active { display:block; }
+
+/* ANALYTICS */
+.analytics-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:16px; margin-bottom:32px; }
+.analytics-card {
+  background:var(--bg3); border:1px solid var(--border);
+  padding:20px; text-align:center;
+}
+.analytics-num { font-family:'Playfair Display', serif; font-size:32px; color:var(--gold); }
+.analytics-label { font-size:11px; color:var(--text2); letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
+.chart-bar-container { margin-top:24px; }
+.chart-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.chart-label { font-size:11px; color:var(--text2); width:80px; text-align:right; }
+.chart-bar { flex:1; height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+.chart-fill { height:100%; background:linear-gradient(to right, var(--gold3), var(--gold)); border-radius:4px; transition:width 1s; }
+.chart-val { font-size:11px; color:var(--gold3); width:30px; }
+
+/* CONTENT TABLE */
+.content-table { width:100%; border-collapse:collapse; }
+.content-table th {
+  text-align:left; padding:10px 12px;
+  font-size:10px; letter-spacing:2px; color:var(--gold3);
+  text-transform:uppercase; border-bottom:1px solid var(--border);
+}
+.content-table td { padding:12px; border-bottom:1px solid rgba(201,168,76,0.08); font-size:13px; color:var(--text2); }
+.content-table tr:hover td { background:rgba(201,168,76,0.04); }
+.table-btn {
+  padding:4px 10px; font-size:10px; border:1px solid var(--border);
+  background:transparent; color:var(--text2); cursor:pointer;
+  font-family:'Jost',sans-serif; letter-spacing:1px; transition:all 0.2s;
+}
+.table-btn:hover { border-color:var(--red); color:var(--red); }
+.table-btn.edit:hover { border-color:var(--gold3); color:var(--gold3); }
+
+/* NOTIFICATIONS */
+.notif {
+  position:fixed; top:90px; right:20px; z-index:9998;
+  padding:14px 20px; background:var(--bg2);
+  border-left:3px solid var(--gold);
+  font-size:13px; color:var(--text);
+  animation: slide-in 0.3s ease, fade-out 0.3s 2.7s ease forwards;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+@keyframes slide-in { from{transform:translateX(100%)} to{transform:translateX(0)} }
+@keyframes fade-out { to{opacity:0; transform:translateX(100%)} }
+
+/* LIGHTBOX */
+#lightbox {
+  display:none; position:fixed; inset:0; z-index:4000;
+  background:rgba(0,0,0,0.95); align-items:center; justify-content:center;
+}
+#lightbox.open { display:flex; }
+#lightbox img { max-width:90%; max-height:90vh; object-fit:contain; }
+#lightbox .close-lb {
+  position:absolute; top:20px; right:20px;
+  color:var(--gold); font-size:24px; cursor:pointer;
+}
+
+/* MOBILE NAV */
+.hamburger {
+  display:none; flex-direction:column; gap:5px;
+  cursor:pointer; padding:4px;
+}
+.hamburger span {
+  display:block; width:22px; height:2px;
+  background:var(--gold); transition:all 0.3s;
+}
+.mobile-nav {
+  display:none; position:fixed; inset:0; z-index:999;
+  background:rgba(13,8,5,0.97); padding:100px 40px 40px;
+  flex-direction:column; gap:24px;
+}
+.mobile-nav.open { display:flex; }
+.mobile-nav a {
+  font-family:'Playfair Display', serif;
+  font-size:28px; color:var(--cream); text-decoration:none;
+  transition:color 0.3s; cursor:pointer;
+}
+.mobile-nav a:hover { color:var(--gold); }
+
+/* RESPONSIVE */
+@media(max-width:768px) {
+  nav { display:none; }
+  .hamburger { display:flex; }
+  header { padding:0 20px; }
+  .hero-title { font-size:42px; }
+  .hero-stats { gap:24px; }
+  .about-inner { grid-template-columns:1fr; }
+  .about-portrait { max-height:200px; aspect-ratio:auto; }
+  section { padding:60px 20px; }
+  .admin-panel { width:100%; }
+}
+
+/* ANIMATIONS */
+[data-reveal] {
+  opacity:0; transform:translateY(30px);
+  transition:opacity 0.7s, transform 0.7s;
+}
+[data-reveal].revealed { opacity:1; transform:translateY(0); }
+
+/* LANG */
+[data-uz], [data-ru], [data-en] { transition:opacity 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="seal">☽</div>
+  <p data-uz="Yuklanmoqda" data-ru="Загрузка" data-en="Loading">Yuklanmoqda</p>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <a onclick="scrollTo('hero');closeMobileNav()"><span data-uz="Bosh sahifa" data-ru="Главная" data-en="Home">Bosh sahifa</span></a>
+  <a onclick="scrollTo('videos');closeMobileNav()"><span data-uz="Videolar" data-ru="Видео" data-en="Videos">Videolar</span></a>
+  <a onclick="scrollTo('library');closeMobileNav()"><span data-uz="Kutubxona" data-ru="Библиотека" data-en="Library">Kutubxona</span></a>
+  <a onclick="scrollTo('gallery');closeMobileNav()"><span data-uz="Galereya" data-ru="Галерея" data-en="Gallery">Galereya</span></a>
+  <a onclick="scrollTo('games');closeMobileNav()"><span data-uz="O'yinlar" data-ru="Игры" data-en="Games">O'yinlar</span></a>
+  <a onclick="scrollTo('about');closeMobileNav()"><span data-uz="Men haqimda" data-ru="Обо мне" data-en="About">Men haqimda</span></a>
+  <a onclick="scrollTo('connect');closeMobileNav()"><span data-uz="Aloqa" data-ru="Контакт" data-en="Connect">Aloqa</span></a>
+</div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <a class="logo" onclick="scrollTo('hero')">
+    <div class="logo-icon">☽</div>
+    <span>Devonbegi<span style="color:var(--cream);font-weight:300"> Kundaligi</span></span>
+  </a>
+  <nav>
+    <a onclick="scrollTo('videos')"><span data-uz="Videolar" data-ru="Видео" data-en="Videos">Videolar</span></a>
+    <a onclick="scrollTo('library')"><span data-uz="Kutubxona" data-ru="Библиотека" data-en="Library">Kutubxona</span></a>
+    <a onclick="scrollTo('gallery')"><span data-uz="Galereya" data-ru="Галерея" data-en="Gallery">Galereya</span></a>
+    <a onclick="scrollTo('games')"><span data-uz="O'yinlar" data-ru="Игры" data-en="Games">O'yinlar</span></a>
+    <a onclick="scrollTo('about')"><span data-uz="Men haqimda" data-ru="Обо мне" data-en="About">Men haqimda</span></a>
+    <a onclick="scrollTo('connect')"><span data-uz="Aloqa" data-ru="Контакт" data-en="Connect">Aloqa</span></a>
+  </nav>
+  <div class="header-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('uz')">UZ</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="social-links">
+      <a href="https://www.youtube.com/@Devonbegikundaligi" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://t.me/devonbegikundaligi" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+      <a href="https://www.instagram.com/turdiyev.samandarbek" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
+    <button class="admin-btn" onclick="openAdmin()">
+      <span data-uz="Admin" data-ru="Админ" data-en="Admin">Admin</span>
+    </button>
+    <div class="hamburger" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span class="close-lb" onclick="closeLightbox()">✕</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- ====== HERO ====== -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative; z-index:1; width:100%;">
+    <div class="ornament">
+      <span data-uz="Tarixchi • Tadqiqotchi • Blogger" data-ru="Историк • Исследователь • Блогер" data-en="Historian • Researcher • Blogger">Tarixchi • Tadqiqotchi • Blogger</span>
+    </div>
+    <h1 class="hero-title">
+      Turdiyev<br><span>Samandarbek</span>
+    </h1>
+    <p class="hero-subtitle" data-uz="Tarix — o'tmishning tirik xotirasi" data-ru="История — живая память прошлого" data-en="History — the living memory of the past">Tarix — o'tmishning tirik xotirasi</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc" data-uz="O'rta Osiyo tarixi, Temuriylar davri va qadimiy sivilizatsiyalar bo'yicha ilmiy tadqiqotlar. Suniy intellekt yordamida yaratilgan tarixiy kontentlar." data-ru="Научные исследования по истории Средней Азии, эпохе Тимуридов и древним цивилизациям. Исторический контент, созданный с помощью искусственного интеллекта." data-en="Academic research on Central Asian history, the Timurid era and ancient civilizations. Historical content created with artificial intelligence.">O'rta Osiyo tarixi, Temuriylar davri va qadimiy sivilizatsiyalar bo'yicha ilmiy tadqiqotlar. Suniy intellekt yordamida yaratilgan tarixiy kontentlar.</p>
+    <div class="hero-stats" id="hero-stats">
+      <div class="stat"><div class="stat-num" id="stat-vids">0</div><div class="stat-label" data-uz="Videolar" data-ru="Видео" data-en="Videos">Videolar</div></div>
+      <div class="stat"><div class="stat-num" id="stat-books">0</div><div class="stat-label" data-uz="Maqolalar" data-ru="Статьи" data-en="Articles">Maqolalar</div></div>
+      <div class="stat"><div class="stat-num" id="stat-games">0</div><div class="stat-label" data-uz="O'yinlar" data-ru="Игры" data-en="Games">O'yinlar</div></div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn-gold" onclick="scrollTo('videos')"><span data-uz="Videolarni ko'rish" data-ru="Смотреть видео" data-en="Watch Videos">Videolarni ko'rish</span></button>
+      <button class="btn-outline" onclick="scrollTo('library')"><span data-uz="Kutubxona" data-ru="Библиотека" data-en="Library">Kutubxona</span></button>
+    </div>
+  </div>
+  <div class="scroll-hint"><span data-uz="PASTGA" data-ru="ВНИЗ" data-en="SCROLL">PASTGA</span></div>
+</section>
+
+<!-- ====== VIDEOS ====== -->
+<section id="videos">
+  <div class="section-head" data-reveal>
+    <span class="section-tag" data-uz="YouTube kanali" data-ru="YouTube канал" data-en="YouTube channel">YouTube kanali</span>
+    <h2 class="section-title" data-uz="Tarixiy <span>Videolar</span>" data-ru="Исторические <span>Видео</span>" data-en="Historical <span>Videos</span>">Tarixiy <span>Videolar</span></h2>
+    <div class="section-line"></div>
+    <p class="section-desc" data-uz="Suniy intellekt yordamida yaratilgan tarixiy kontentlar" data-ru="Исторический контент, созданный с помощью ИИ" data-en="Historical content created with AI">Suniy intellekt yordamida yaratilgan tarixiy kontentlar</p>
+  </div>
+  <div class="videos-grid" id="videos-grid"></div>
+  <div style="text-align:center;margin-top:32px;">
+    <a href="https://www.youtube.com/@Devonbegikundaligi" target="_blank" class="btn-gold">
+      <span data-uz="YouTube kanalga o'tish" data-ru="Перейти на канал" data-en="Visit YouTube Channel">YouTube kanalga o'tish</span>
+    </a>
+  </div>
+</section>
+
+<!-- ====== LIBRARY ====== -->
+<section id="library">
+  <div class="section-head" data-reveal>
+    <span class="section-tag" data-uz="Ilmiy manbalar" data-ru="Научные источники" data-en="Academic Sources">Ilmiy manbalar</span>
+    <h2 class="section-title" data-uz="Ilmiy <span>Kutubxona</span>" data-ru="Научная <span>Библиотека</span>" data-en="Academic <span>Library</span>">Ilmiy <span>Kutubxona</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div style="text-align:center;">
+    <div class="lib-tabs">
+      <button class="lib-tab active" onclick="filterLib('all')" data-uz="Barchasi" data-ru="Все" data-en="All">Barchasi</button>
+      <button class="lib-tab" onclick="filterLib('article')" data-uz="Maqolalar" data-ru="Статьи" data-en="Articles">Maqolalar</button>
+      <button class="lib-tab" onclick="filterLib('dissertation')" data-uz="Dissertatsiyalar" data-ru="Диссертации" data-en="Dissertations">Dissertatsiyalar</button>
+      <button class="lib-tab" onclick="filterLib('book')" data-uz="Kitoblar" data-ru="Книги" data-en="Books">Kitoblar</button>
+    </div>
+  </div>
+  <div class="library-grid" id="library-grid"></div>
+</section>
+
+<!-- ====== GALLERY ====== -->
+<section id="gallery">
+  <div class="section-head" data-reveal>
+    <span class="section-tag" data-uz="Vizual arxiv" data-ru="Визуальный архив" data-en="Visual Archive">Vizual arxiv</span>
+    <h2 class="section-title" data-uz="Foto <span>Galereya</span>" data-ru="Фото <span>Галерея</span>" data-en="Photo <span>Gallery</span>">Foto <span>Galereya</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<!-- ====== GAMES ====== -->
+<section id="games">
+  <div class="section-head" data-reveal>
+    <span class="section-tag" data-uz="Interaktiv ta'lim" data-ru="Интерактивное обучение" data-en="Interactive Learning">Interaktiv ta'lim</span>
+    <h2 class="section-title" data-uz="Tarixiy <span>O'yinlar</span>" data-ru="Исторические <span>Игры</span>" data-en="Historical <span>Games</span>">Tarixiy <span>O'yinlar</span></h2>
+    <div class="section-line"></div>
+    <p class="section-desc" data-uz="O'ynab o'rganing — tarixni qiziqarli usulda kashf eting" data-ru="Учитесь играя — откройте историю увлекательным способом" data-en="Learn by playing — discover history in an exciting way">O'ynab o'rganing — tarixni qiziqarli usulda kashf eting</p>
+  </div>
+  <div class="games-grid" id="games-grid"></div>
+</section>
+
+<!-- GAME MODAL -->
+<div class="game-modal" id="game-modal">
+  <div class="game-container">
+    <button class="close-modal" onclick="closeGame()">✕</button>
+    <div id="game-content"></div>
+  </div>
+</div>
+
+<!-- ====== ABOUT ====== -->
+<section id="about">
+  <div class="section-head" data-reveal>
+    <span class="section-tag" data-uz="Muallif haqida" data-ru="Об авторе" data-en="About the Author">Muallif haqida</span>
+    <h2 class="section-title" data-uz="<span>Men</span> haqimda" data-ru="<span>Обо</span> мне" data-en="About <span>Me</span>"><span>Men</span> haqimda</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-inner">
+    <div class="about-portrait">
+      <span class="portrait-placeholder">☽</span>
+    </div>
+    <div class="about-text">
+      <h3 class="about-name">Turdiyev Samandarbek</h3>
+      <p class="about-role" data-uz="Tarixchi • Mutaxassis • Tadqiqotchi" data-ru="Историк • Специалист • Исследователь" data-en="Historian • Specialist • Researcher">Tarixchi • Mutaxassis • Tadqiqotchi</p>
+      <p class="about-bio" data-uz="Men O'rta Osiyo tarixi, Temuriylar saltanati va qadimiy sivilizatsiyalar bo'yicha tadqiqot olib boraman. Zamonaviy suniy intellekt texnologiyalaridan foydalanib, tarixiy voqealarni yangi ko'z bilan ko'rsatishga harakat qilaman." data-ru="Я провожу исследования по истории Средней Азии, державе Тимуридов и древним цивилизациям. Используя современные технологии искусственного интеллекта, я стараюсь взглянуть на исторические события по-новому." data-en="I conduct research on Central Asian history, the Timurid Empire, and ancient civilizations. Using modern artificial intelligence technologies, I try to present historical events with fresh perspectives.">Men O'rta Osiyo tarixi, Temuriylar saltanati va qadimiy sivilizatsiyalar bo'yicha tadqiqot olib boraman. Zamonaviy suniy intellekt texnologiyalaridan foydalanib, tarixiy voqealarni yangi ko'z bilan ko'rsatishga harakat qilaman.</p>
+      <p class="about-bio" data-uz="Devonbegi Kundaligi YouTube kanali orqali keng jamoatchilikka tarix fanini qiziqarli va tushunarli tarzda yetkazishni maqsad qilganman." data-ru="Через YouTube-канал «Devonbegi Kundaligi» я ставлю своей целью донести историческую науку до широкой аудитории в интересной и понятной форме." data-en="Through the Devonbegi Kundaligi YouTube channel, my goal is to bring the science of history to a wide audience in an interesting and accessible way.">Devonbegi Kundaligi YouTube kanali orqali keng jamoatchilikka tarix fanini qiziqarli va tushunarli tarzda yetkazishni maqsad qilganman.</p>
+      <div class="skills-list">
+        <span class="skill-tag" data-uz="O'rta Osiyo Tarixi" data-ru="История Средней Азии" data-en="Central Asian History">O'rta Osiyo Tarixi</span>
+        <span class="skill-tag" data-uz="Temuriylar Davri" data-ru="Эпоха Тимуридов" data-en="Timurid Era">Temuriylar Davri</span>
+        <span class="skill-tag" data-uz="Arxeologiya" data-ru="Археология" data-en="Archaeology">Arxeologiya</span>
+        <span class="skill-tag" data-uz="Suniy Intellekt" data-ru="Искусственный Интеллект" data-en="Artificial Intelligence">Suniy Intellekt</span>
+        <span class="skill-tag" data-uz="Manbashunoslik" data-ru="Источниковедение" data-en="Source Studies">Manbashunoslik</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CONNECT ====== -->
+<section id="connect">
+  <div class="section-head" data-reveal>
+    <span class="section-tag" data-uz="Ijtimoiy tarmoqlar" data-ru="Социальные сети" data-en="Social Networks">Ijtimoiy tarmoqlar</span>
+    <h2 class="section-title" data-uz="Meni <span>Kuzating</span>" data-ru="<span>Подписывайтесь</span> на меня" data-en="Follow <span>Me</span>">Meni <span>Kuzating</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="social-grid">
+    <a href="https://www.youtube.com/@Devonbegikundaligi" target="_blank" class="social-card yt">
+      <i class="fab fa-youtube social-icon"></i>
+      <h4>YouTube</h4>
+      <p>@Devonbegikundaligi</p>
+    </a>
+    <a href="https://t.me/devonbegikundaligi" target="_blank" class="social-card tg">
+      <i class="fab fa-telegram social-icon"></i>
+      <h4>Telegram</h4>
+      <p>@devonbegikundaligi</p>
+    </a>
+    <a href="https://www.instagram.com/turdiyev.samandarbek" target="_blank" class="social-card ig">
+      <i class="fab fa-instagram social-icon"></i>
+      <h4>Instagram</h4>
+      <p>@turdiyev.samandarbek</p>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Devonbegi Kundaligi</div>
+  <div class="footer-sub" data-uz="Turdiyev Samandarbek • Tarixchi" data-ru="Тurdiyev Samandarbek • Историк" data-en="Turdiyev Samandarbek • Historian">Turdiyev Samandarbek • Tarixchi</div>
+  <div class="footer-links">
+    <a onclick="scrollTo('videos')"><span data-uz="Videolar" data-ru="Видео" data-en="Videos">Videolar</span></a>
+    <a onclick="scrollTo('library')"><span data-uz="Kutubxona" data-ru="Библиотека" data-en="Library">Kutubxona</span></a>
+    <a onclick="scrollTo('games')"><span data-uz="O'yinlar" data-ru="Игры" data-en="Games">O'yinlar</span></a>
+    <a onclick="scrollTo('about')"><span data-uz="Men haqimda" data-ru="Обо мне" data-en="About">Men haqimda</span></a>
+  </div>
+  <div class="footer-copy">© 2024 Turdiyev Samandarbek. <span data-uz="Barcha huquqlar himoyalangan." data-ru="Все права защищены." data-en="All rights reserved.">Barcha huquqlar himoyalangan.</span></div>
+</footer>
+
+<!-- ====== ADMIN PANEL ====== -->
+<div id="admin-modal">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2><i class="fas fa-shield-alt" style="color:var(--gold);margin-right:10px;font-size:18px;"></i> <span data-uz="Admin Panel" data-ru="Панель администратора" data-en="Admin Panel">Admin Panel</span></h2>
+      <button class="close-modal" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <!-- LOGIN -->
+      <div id="admin-login">
+        <div class="admin-login-form">
+          <h3>🔐 <span data-uz="Kirish" data-ru="Войти" data-en="Login">Kirish</span></h3>
+          <div class="form-group">
+            <label data-uz="Foydalanuvchi nomi" data-ru="Логин" data-en="Username">Foydalanuvchi nomi</label>
+            <input type="text" id="admin-user" placeholder="admin" autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label data-uz="Parol" data-ru="Пароль" data-en="Password">Parol</label>
+            <input type="password" id="admin-pass" placeholder="••••••••" autocomplete="current-password">
+          </div>
+          <button class="btn-gold" style="width:100%;margin-top:12px;" onclick="adminLogin()">
+            <span data-uz="Kirish" data-ru="Войти" data-en="Login">Kirish</span>
+          </button>
+          <p style="font-size:11px;color:var(--text2);margin-top:12px;" data-uz="Standart: admin / devonbegi2024" data-ru="По умолчанию: admin / devonbegi2024" data-en="Default: admin / devonbegi2024">Standart: admin / devonbegi2024</p>
+        </div>
+      </div>
+      <!-- DASHBOARD -->
+      <div id="admin-dashboard" style="display:none;">
+        <div class="admin-tabs">
+          <button class="admin-tab active" onclick="adminTab('analytics')"><i class="fas fa-chart-bar"></i> <span data-uz="Analitika" data-ru="Аналитика" data-en="Analytics">Analitika</span></button>
+          <button class="admin-tab" onclick="adminTab('videos-mgmt')"><i class="fas fa-video"></i> <span data-uz="Videolar" data-ru="Видео" data-en="Videos">Videolar</span></button>
+          <button class="admin-tab" onclick="adminTab('library-mgmt')"><i class="fas fa-book"></i> <span data-uz="Kutubxona" data-ru="Библиотека" data-en="Library">Kutubxona</span></button>
+          <button class="admin-tab" onclick="adminTab('gallery-mgmt')"><i class="fas fa-images"></i> <span data-uz="Galereya" data-ru="Галерея" data-en="Gallery">Galereya</span></button>
+          <button class="admin-tab" onclick="adminTab('settings-mgmt')"><i class="fas fa-cog"></i> <span data-uz="Sozlamalar" data-ru="Настройки" data-en="Settings">Sozlamalar</span></button>
+        </div>
+
+        <!-- ANALYTICS TAB -->
+        <div id="tab-analytics" class="admin-tab-content active">
+          <div class="analytics-grid">
+            <div class="analytics-card"><div class="analytics-num" id="a-views">0</div><div class="analytics-label" data-uz="Sahifa ko'rishlari" data-ru="Просмотры страницы" data-en="Page Views">Sahifa ko'rishlari</div></div>
+            <div class="analytics-card"><div class="analytics-num" id="a-sessions">0</div><div class="analytics-label" data-uz="Sessiyalar" data-ru="Сессии" data-en="Sessions">Sessiyalar</div></div>
+            <div class="analytics-card"><div class="analytics-num" id="a-videos">0</div><div class="analytics-label" data-uz="Video kliklari" data-ru="Клики по видео" data-en="Video Clicks">Video kliklari</div></div>
+            <div class="analytics-card"><div class="analytics-num" id="a-games">0</div><div class="analytics-label" data-uz="O'yin o'ynashlar" data-ru="Игры сыграны" data-en="Games Played">O'yin o'ynashlar</div></div>
+          </div>
+          <div class="chart-bar-container">
+            <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:16px;" data-uz="Haftalik trafik" data-ru="Недельный трафик" data-en="Weekly Traffic">Haftalik trafik</h4>
+            <div id="weekly-chart"></div>
+          </div>
+        </div>
+
+        <!-- VIDEOS MGMT TAB -->
+        <div id="tab-videos-mgmt" class="admin-tab-content">
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:20px;">
+            <span data-uz="Video qo'shish" data-ru="Добавить видео" data-en="Add Video">Video qo'shish</span>
+          </h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div class="form-group"><label data-uz="Video sarlavhasi" data-ru="Название видео" data-en="Video Title">Sarlavha</label><input id="v-title" type="text" placeholder="Sarlavha..."></div>
+            <div class="form-group"><label>YouTube ID / URL</label><input id="v-url" type="text" placeholder="dQw4w9WgXcQ yoki to'liq URL"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label data-uz="Tavsif" data-ru="Описание" data-en="Description">Tavsif</label><textarea id="v-desc" placeholder="Video haqida qisqacha..."></textarea></div>
+          </div>
+          <button class="btn-gold" onclick="addVideo()"><span data-uz="Qo'shish" data-ru="Добавить" data-en="Add">Qo'shish</span></button>
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin:24px 0 12px;">
+            <span data-uz="Mavjud videolar" data-ru="Существующие видео" data-en="Existing Videos">Mavjud videolar</span>
+          </h4>
+          <table class="content-table"><thead><tr><th>Sarlavha</th><th>YouTube ID</th><th>Amal</th></tr></thead><tbody id="videos-table"></tbody></table>
+        </div>
+
+        <!-- LIBRARY MGMT TAB -->
+        <div id="tab-library-mgmt" class="admin-tab-content">
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:20px;">
+            <span data-uz="Hujjat qo'shish" data-ru="Добавить документ" data-en="Add Document">Hujjat qo'shish</span>
+          </h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div class="form-group"><label data-uz="Sarlavha" data-ru="Название" data-en="Title">Sarlavha</label><input id="l-title" type="text" placeholder="Sarlavha..."></div>
+            <div class="form-group">
+              <label data-uz="Turi" data-ru="Тип" data-en="Type">Turi</label>
+              <select id="l-type">
+                <option value="article" data-uz="Maqola" data-ru="Статья" data-en="Article">Maqola</option>
+                <option value="dissertation" data-uz="Dissertatsiya" data-ru="Диссертация" data-en="Dissertation">Dissertatsiya</option>
+                <option value="book" data-uz="Kitob" data-ru="Книга" data-en="Book">Kitob</option>
+              </select>
+            </div>
+            <div class="form-group"><label>URL / PDF havolasi</label><input id="l-url" type="text" placeholder="https://..."></div>
+            <div class="form-group"><label data-uz="Muallif" data-ru="Автор" data-en="Author">Muallif</label><input id="l-author" type="text" placeholder="Muallif nomi..."></div>
+            <div class="form-group"><label data-uz="Yil" data-ru="Год" data-en="Year">Yil</label><input id="l-year" type="number" placeholder="2024"></div>
+          </div>
+          <button class="btn-gold" onclick="addLibItem()"><span data-uz="Qo'shish" data-ru="Добавить" data-en="Add">Qo'shish</span></button>
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin:24px 0 12px;">
+            <span data-uz="Mavjud hujjatlar" data-ru="Существующие документы" data-en="Existing Documents">Mavjud hujjatlar</span>
+          </h4>
+          <table class="content-table"><thead><tr><th>Sarlavha</th><th>Turi</th><th>Yil</th><th>Amal</th></tr></thead><tbody id="library-table"></tbody></table>
+        </div>
+
+        <!-- GALLERY MGMT TAB -->
+        <div id="tab-gallery-mgmt" class="admin-tab-content">
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:20px;">
+            <span data-uz="Rasm qo'shish" data-ru="Добавить изображение" data-en="Add Image">Rasm qo'shish</span>
+          </h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div class="form-group"><label data-uz="Rasm nomi" data-ru="Название изображения" data-en="Image Name">Rasm nomi</label><input id="g-title" type="text" placeholder="Rasm nomi..."></div>
+            <div class="form-group"><label>URL</label><input id="g-url" type="text" placeholder="https://... yoki rasm URL"></div>
+          </div>
+          <button class="btn-gold" onclick="addGalleryItem()"><span data-uz="Qo'shish" data-ru="Добавить" data-en="Add">Qo'shish</span></button>
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin:24px 0 12px;">
+            <span data-uz="Mavjud rasmlar" data-ru="Существующие изображения" data-en="Existing Images">Mavjud rasmlar</span>
+          </h4>
+          <table class="content-table"><thead><tr><th>Nomi</th><th>URL</th><th>Amal</th></tr></thead><tbody id="gallery-table"></tbody></table>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="tab-settings-mgmt" class="admin-tab-content">
+          <h4 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:20px;" data-uz="Parolni o'zgartirish" data-ru="Изменить пароль" data-en="Change Password">Parolni o'zgartirish</h4>
+          <div class="form-group"><label data-uz="Yangi parol" data-ru="Новый пароль" data-en="New Password">Yangi parol</label><input id="new-pass" type="password" placeholder="Yangi parol..."></div>
+          <button class="btn-gold" onclick="changePass()"><span data-uz="Saqlash" data-ru="Сохранить" data-en="Save">Saqlash</span></button>
+          <div style="margin-top:32px;">
+            <button class="btn-outline" onclick="adminLogout()"><span data-uz="Chiqish" data-ru="Выйти" data-en="Logout">Chiqish</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== DATA STORE ======
+const DEFAULT_DATA = {
+  password: 'devonbegi2024',
+  videos: [
+    { id:1, title:"Temuriylar saltanati — Buyuk imperiya tarixi", ytid:"VIDEO_ID_1", desc:"Temuriylar davlati va uning tarixi haqida batafsil", date:"2024-01-15" },
+    { id:2, title:"Amir Temur va uning islohotlari", ytid:"VIDEO_ID_2", desc:"Amir Temurning davlatchilik islohotlari", date:"2024-02-10" },
+    { id:3, title:"Samarqand — Temuriylar poytaxti", ytid:"VIDEO_ID_3", desc:"Samarqand shahrining tarixiy obidalairi", date:"2024-03-05" },
+  ],
+  library: [
+    { id:1, title:"O'rta Osiyo tarixiga oid tadqiqotlar", type:"article", url:"#", author:"Turdiyev S.", year:"2023" },
+    { id:2, title:"Temuriylar davrida fan va madaniyat", type:"dissertation", url:"#", author:"Turdiyev S.", year:"2022" },
+    { id:3, title:"Qadimiy Samarqand sivilizatsiyasi", type:"book", url:"#", author:"Turdiyev S.", year:"2021" },
+    { id:4, title:"Movarounnahr tarixi", type:"article", url:"#", author:"Turdiyev S.", year:"2024" },
+    { id:5, title:"Xorazm shaharlari arxeologiyasi", type:"book", url:"#", author:"Turdiyev S.", year:"2020" },
+    { id:6, title:"Ibn Batuuta sayohati va O'rta Osiyo", type:"dissertation", url:"#", author:"Turdiyev S.", year:"2023" },
+  ],
+  gallery: [],
+  analytics: { views:0, sessions:0, videoClicks:0, gamesPlayed:0, weekly:[10,25,18,42,35,60,48] }
+};
+
+function getData() {
+  const d = localStorage.getItem('devonbegi_data');
+  return d ? JSON.parse(d) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function saveData(d) { localStorage.setItem('devonbegi_data', JSON.stringify(d)); }
+
+// Init data if not exists
+if (!localStorage.getItem('devonbegi_data')) saveData(JSON.parse(JSON.stringify(DEFAULT_DATA)));
+
+// ====== LANG ======
+let currentLang = localStorage.getItem('lang') || 'uz';
+function setLang(l) {
+  currentLang = l;
+  localStorage.setItem('lang', l);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  document.documentElement.lang = l;
+  updateLang();
+}
+function updateLang() {
+  document.querySelectorAll('[data-uz]').forEach(el => {
+    const txt = el.getAttribute('data-'+currentLang) || el.getAttribute('data-uz');
+    if(el.tagName === 'BUTTON' || el.tagName === 'SPAN' || el.tagName === 'P' || el.tagName === 'A' || el.tagName === 'DIV' || el.tagName === 'LABEL') {
+      if(!txt.includes('<')) el.textContent = txt;
+      else el.innerHTML = txt;
+    }
+  });
+  // Section titles
+  document.querySelectorAll('[data-uz]').forEach(el => {
+    const txt = el.getAttribute('data-'+currentLang) || el.getAttribute('data-uz');
+    if(txt && txt.includes('<span>')) el.innerHTML = txt;
+  });
+}
+setLang(currentLang);
+
+// ====== LOADER ======
+window.addEventListener('load', () => {
+  const data = getData();
+  data.analytics.sessions = (data.analytics.sessions||0) + 1;
+  data.analytics.views = (data.analytics.views||0) + 1;
+  saveData(data);
+  setTimeout(() => {
+    document.getElementById('loader').style.opacity = '0';
+    setTimeout(() => { document.getElementById('loader').style.display='none'; }, 800);
+    initAll();
+    animateStats();
+  }, 1800);
+});
+
+// ====== INIT ======
+function initAll() {
+  renderVideos();
+  renderLibrary();
+  renderGallery();
+  renderGames();
+  initReveal();
+  updateLang();
+}
+
+// ====== SCROLL ======
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
+}
+
+// ====== MOBILE NAV ======
+function toggleMobileNav() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+}
+function closeMobileNav() {
+  document.getElementById('mobile-nav').classList.remove('open');
+}
+
+// ====== STATS COUNTER ======
+function animateStats() {
+  const d = getData();
+  animCount('stat-vids', d.videos.length);
+  animCount('stat-books', d.library.length);
+  animCount('stat-games', 3);
+}
+function animCount(id, target) {
+  const el = document.getElementById(id);
+  let i=0; const step = Math.ceil(target/30);
+  const t = setInterval(() => {
+    i += step;
+    if(i >= target) { el.textContent = target; clearInterval(t); } else el.textContent = i;
+  }, 50);
+}
+
+// ====== REVEAL ======
+function initReveal() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); } });
+  }, { threshold:0.1 });
+  document.querySelectorAll('[data-reveal]').forEach(el => obs.observe(el));
+}
+
+// ====== VIDEOS ======
+function getYTid(input) {
+  if(!input) return '';
+  const match = input.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+  return match ? match[1] : input.trim();
+}
+function renderVideos() {
+  const d = getData();
+  const g = document.getElementById('videos-grid');
+  if(!d.videos.length) { g.innerHTML = '<p style="color:var(--text2);text-align:center;grid-column:1/-1;" data-uz="Hali videolar yo\'q" data-ru="Видео пока нет" data-en="No videos yet">Hali videolar yo\'q</p>'; return; }
+  g.innerHTML = d.videos.map(v => `
+    <div class="video-card" onclick="openYT('${v.ytid}')">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/${v.ytid}/hqdefault.jpg" alt="${v.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+        <div class="play-overlay">
+          <div class="play-btn"><i class="fas fa-play"></i></div>
+        </div>
+      </div>
+      <div class="video-info">
+        <h3>${v.title}</h3>
+        <p>${v.desc||''}</p>
+        <div class="video-meta"><span><i class="fab fa-youtube"></i> YouTube</span><span>${v.date||''}</span></div>
+      </div>
+    </div>`).join('');
+}
+function openYT(ytid) {
+  const d = getData(); d.analytics.videoClicks = (d.analytics.videoClicks||0)+1; saveData(d);
+  window.open(`https://www.youtube.com/watch?v=${ytid}`, '_blank');
+}
+
+// ====== LIBRARY ======
+const typeIcons = { article:'📄', dissertation:'🎓', book:'📖' };
+const typeColors = { article:'#C9A84C', dissertation:'#8B1A1A', book:'#2ecc71' };
+
+function renderLibrary(filter='all') {
+  const d = getData();
+  const g = document.getElementById('library-grid');
+  const items = filter === 'all' ? d.library : d.library.filter(i=>i.type===filter);
+  if(!items.length) { g.innerHTML = '<p style="color:var(--text2);text-align:center;grid-column:1/-1;">—</p>'; return; }
+  const typeLabel = { article:{uz:'Maqola',ru:'Статья',en:'Article'}, dissertation:{uz:'Dissertatsiya',ru:'Диссертация',en:'Dissertation'}, book:{uz:'Kitob',ru:'Книга',en:'Book'} };
+  g.innerHTML = items.map(i => `
+    <div class="book-card" onclick="openDoc('${i.url}')">
+      <span class="book-icon">${typeIcons[i.type]||'📄'}</span>
+      <h4>${i.title}</h4>
+      <p>${i.author||''} ${i.year ? '• '+i.year : ''}</p>
+      <span class="book-tag" style="border-color:${typeColors[i.type]};color:${typeColors[i.type]};">${(typeLabel[i.type]||{})[currentLang]||i.type}</span>
+    </div>`).join('');
+}
+function filterLib(type) {
+  document.querySelectorAll('.lib-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  renderLibrary(type);
+}
+function openDoc(url) {
+  if(url && url !== '#') window.open(url, '_blank');
+  else showNotif('Hujjat havolasi mavjud emas');
+}
+
+// ====== GALLERY ======
+function renderGallery() {
+  const d = getData();
+  const g = document.getElementById('gallery-grid');
+  const items = d.gallery;
+  const placeholders = Array(6).fill(null);
+  const all = [...items, ...placeholders].slice(0, Math.max(items.length, 6));
+  g.innerHTML = all.map((item, i) => item ? `
+    <div class="gallery-item" onclick="openLightbox('${item.url}')">
+      <img src="${item.url}" alt="${item.title}" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><i class=fas fa-image></i><span>${item.title||\'\'}</span></div>'">
+      <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+    </div>` : `
+    <div class="gallery-item">
+      <div class="gallery-placeholder"><i class="fas fa-image"></i><span>${['XIV asr','Temuriylar','Samarqand','Buxoro','Xorazm','Arxeologiya'][i]}</span></div>
+    </div>`).join('');
+}
+function openLightbox(url) {
+  document.getElementById('lb-img').src = url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+// ====== GAMES ======
+const GAMES = [
+  {
+    id:'quiz', icon:'🧠',
+    title:{uz:"Tarix Viktorinasi",ru:"Исторический Quiz",en:"History Quiz"},
+    desc:{uz:"Savollarga javob bering va tarix bo'yicha bilimingizni sinab ko'ring!",ru:"Отвечайте на вопросы и проверьте свои знания по истории!",en:"Answer questions and test your knowledge of history!"},
+    badge:{uz:"Viktorina",ru:"Викторина",en:"Quiz"}
+  },
+  {
+    id:'timeline', icon:'📜',
+    title:{uz:"Voqealar Xronologiyasi",ru:"Хронология событий",en:"Events Timeline"},
+    desc:{uz:"Tarixiy voqealarni to'g'ri tartibda joylashtiring!",ru:"Расставьте исторические события в правильном порядке!",en:"Place historical events in the correct order!"},
+    badge:{uz:"Tartib",ru:"Порядок",en:"Order"}
+  },
+  {
+    id:'map', icon:'🗺️',
+    title:{uz:"Tarixiy Xarita",ru:"Историческая Карта",en:"Historical Map"},
+    desc:{uz:"Xaritada tarixiy shaharlar va joylarni toping!",ru:"Найдите исторические города и места на карте!",en:"Find historical cities and places on the map!"},
+    badge:{uz:"Xarita",ru:"Карта",en:"Map"}
+  }
+];
+function renderGames() {
+  const g = document.getElementById('games-grid');
+  g.innerHTML = GAMES.map(game => `
+    <div class="game-card">
+      <span class="game-badge">${game.badge[currentLang]||game.badge.uz}</span>
+      <div class="game-header">
+        <span class="game-icon">${game.icon}</span>
+        <h3>${game.title[currentLang]||game.title.uz}</h3>
+      </div>
+      <p>${game.desc[currentLang]||game.desc.uz}</p>
+      <button class="play-game-btn" onclick="playGame('${game.id}')">
+        <i class="fas fa-play"></i> ${currentLang==='ru'?'Играть':currentLang==='en'?'Play':'O\'ynash'}
+      </button>
+    </div>`).join('');
+}
+
+// ====== QUIZ GAME ======
+const QUESTIONS = {
+  uz: [
+    { q:"Temuriylar saltanati qachon tashkil topgan?", opts:["1370","1220","1500","1405"], ans:0 },
+    { q:"Amir Temurning poytaxti qaysi shahar edi?", opts:["Buxoro","Xiva","Samarqand","Toshkent"], ans:2 },
+    { q:"Ulug'bek rasadxonasi qachon qurilgan?", opts:["1428","1400","1450","1380"], ans:0 },
+    { q:"Bibixonim masjidi kim tomonidan qurilgan?", opts:["Ulug'bek","Amir Temur","Husayn Boyqaro","Shahruh"], ans:1 },
+    { q:"\"Temurnoma\" asarining muallifi kim?", opts:["Ali Shir Navoiy","Sharafiddin Ali Yazdiy","Babur","Ibn Arabshoh"], ans:1 },
+  ],
+  ru: [
+    { q:"Когда основалась держава Тимуридов?", opts:["1370","1220","1500","1405"], ans:0 },
+    { q:"Какой город был столицей Амира Тимура?", opts:["Бухара","Хива","Самарканд","Ташкент"], ans:2 },
+    { q:"Когда была построена обсерватория Улугбека?", opts:["1428","1400","1450","1380"], ans:0 },
+    { q:"Кто построил мечеть Биби-Ханым?", opts:["Улугбек","Амир Тимур","Хусайн Байкара","Шахрух"], ans:1 },
+    { q:"Кто является автором произведения «Темурнома»?", opts:["Алишер Навои","Шарафуддин Али Йазди","Бабур","Ибн Арабшах"], ans:1 },
+  ],
+  en: [
+    { q:"When was the Timurid Empire established?", opts:["1370","1220","1500","1405"], ans:0 },
+    { q:"What city was Amir Timur's capital?", opts:["Bukhara","Khiva","Samarkand","Tashkent"], ans:2 },
+    { q:"When was Ulugbek's Observatory built?", opts:["1428","1400","1450","1380"], ans:0 },
+    { q:"Who built the Bibi-Khanym Mosque?", opts:["Ulugbek","Amir Timur","Husayn Bayqara","Shahrukh"], ans:1 },
+    { q:"Who is the author of «Temurnoma»?", opts:["Alisher Navoiy","Sharafiddin Ali Yazdi","Babur","Ibn Arabshah"], ans:1 },
+  ]
+};
+let quizState = { qi:0, score:0, answered:false };
+
+function playGame(id) {
+  const d = getData(); d.analytics.gamesPlayed = (d.analytics.gamesPlayed||0)+1; saveData(d);
+  document.getElementById('game-modal').classList.add('open');
+  if(id==='quiz') renderQuiz(0, 0);
+  else if(id==='timeline') renderTimeline();
+  else if(id==='map') renderMapGame();
+}
+function closeGame() { document.getElementById('game-modal').classList.remove('open'); }
+
+function renderQuiz(qi, score) {
+  quizState = { qi, score, answered:false };
+  const qs = QUESTIONS[currentLang] || QUESTIONS.uz;
+  if(qi >= qs.length) {
+    document.getElementById('game-content').innerHTML = `
+      <div style="text-align:center;padding:20px;">
+        <div style="font-family:'Playfair Display',serif;font-size:48px;color:var(--gold);margin-bottom:16px;">${score}/${qs.length}</div>
+        <h2 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:8px;">${score>=4?'🏆 A\'lo!':score>=2?'👍 Yaxshi!':'📚 Ko\'proq o\'qing!'}</h2>
+        <p style="color:var(--text2);margin-bottom:24px;">${currentLang==='ru'?'Ваш результат':currentLang==='en'?'Your score':'Sizning natijangiz'}: ${score}/${qs.length}</p>
+        <button class="btn-gold" onclick="renderQuiz(0,0)">${currentLang==='ru'?'Заново':currentLang==='en'?'Play Again':'Qaytadan'}</button>
+      </div>`;
+    return;
+  }
+  const q = qs[qi];
+  const dots = qs.map((_,i) => `<div class="quiz-dot${i<qi?' done':''}"></div>`).join('');
+  document.getElementById('game-content').innerHTML = `
+    <h3 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:20px;">${currentLang==='ru'?'Исторический Quiz':currentLang==='en'?'History Quiz':'Tarix Viktorinasi'}</h3>
+    <div class="quiz-progress">${dots}</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:16px;">${qi+1}/${qs.length}</p>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options">
+      ${q.opts.map((opt,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${opt}</button>`).join('')}
+    </div>`;
+}
+function answerQuiz(idx) {
+  if(quizState.answered) return;
+  quizState.answered = true;
+  const qs = QUESTIONS[currentLang] || QUESTIONS.uz;
+  const q = qs[quizState.qi];
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns[q.ans].classList.add('correct');
+  if(idx !== q.ans) btns[idx].classList.add('wrong');
+  const newScore = quizState.score + (idx === q.ans ? 1 : 0);
+  setTimeout(() => renderQuiz(quizState.qi+1, newScore), 1200);
+}
+
+// TIMELINE GAME
+const TL_EVENTS = [
+  { year:1336, event:{uz:"Amir Temur tug'ildi",ru:"Родился Амир Тимур",en:"Amir Timur was born"} },
+  { year:1370, event:{uz:"Temuriylar saltanati tashkil topdi",ru:"Основана держава Тимуридов",en:"Timurid Empire founded"} },
+  { year:1402, event:{uz:"Anqara jangi",ru:"Битва при Анкаре",en:"Battle of Ankara"} },
+  { year:1405, event:{uz:"Amir Temur vafot etdi",ru:"Умер Амир Тимур",en:"Amir Timur died"} },
+  { year:1428, event:{uz:"Ulug'bek rasadxonasi qurildi",ru:"Построена обсерватория Улугбека",en:"Ulugbek Observatory built"} },
+];
+function renderTimeline() {
+  const shuffled = [...TL_EVENTS].sort(() => Math.random()-0.5);
+  let html = `<h3 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:20px;">${currentLang==='ru'?'Расставьте события по порядку':currentLang==='en'?'Sort events in order':'Voqealarni tartibga soling'}</h3>
+  <div class="timeline-game" id="tl-container">`;
+  shuffled.forEach((e,i) => { html += `<div class="tl-item" draggable="true" data-year="${e.year}" ondragstart="tlDragStart(event,${i})" ondragover="event.preventDefault()" ondrop="tlDrop(event,${i})"><span class="tl-year">?</span><span class="tl-event">${e.event[currentLang]||e.event.uz}</span></div>`; });
+  html += `</div><button class="btn-gold" style="margin-top:20px;" onclick="checkTimeline()">${currentLang==='ru'?'Проверить':currentLang==='en'?'Check':'Tekshirish'}</button>`;
+  document.getElementById('game-content').innerHTML = html;
+}
+let tlDragging = null;
+function tlDragStart(e, i) { tlDragging = i; }
+function tlDrop(e, i) {
+  if(tlDragging===null || tlDragging===i) return;
+  const items = [...document.querySelectorAll('.tl-item')];
+  const a = items[tlDragging], b = items[i];
+  const tmp = a.innerHTML; a.innerHTML = b.innerHTML; b.innerHTML = tmp;
+  const ay = a.dataset.year, by = b.dataset.year;
+  a.dataset.year = by; b.dataset.year = ay;
+  tlDragging = null;
+}
+function checkTimeline() {
+  const items = [...document.querySelectorAll('.tl-item')];
+  const years = items.map(i=>parseInt(i.dataset.year));
+  const sorted = [...years].sort((a,b)=>a-b);
+  items.forEach((item, i) => {
+    item.querySelector('.tl-year').textContent = years[i];
+    item.style.borderColor = years[i]===sorted[i] ? '#2ecc71' : '#e74c3c';
+  });
+  const correct = years.every((y,i) => y===sorted[i]);
+  setTimeout(() => {
+    if(correct) showNotif('🏆 '+(currentLang==='ru'?'Правильно!':currentLang==='en'?'Correct!':'To\'g\'ri!'));
+    else showNotif('❌ '+(currentLang==='ru'?'Попробуйте ещё раз':currentLang==='en'?'Try again':'Qaytadan urinib ko\'ring'));
+  }, 500);
+}
+
+// MAP GAME
+const MAP_CITIES = [
+  { name:"Samarqand", x:68, y:45, correct:true },
+  { name:"Buxoro", x:42, y:52, correct:true },
+  { name:"Xiva", x:20, y:38, correct:true },
+  { name:"Toshkent", x:78, y:25, correct:true },
+  { name:"Termiz", x:65, y:75, correct:true },
+];
+let mapAsk = 0;
+function renderMapGame() {
+  mapAsk = Math.floor(Math.random()*MAP_CITIES.length);
+  const city = MAP_CITIES[mapAsk];
+  document.getElementById('game-content').innerHTML = `
+    <h3 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:12px;">${currentLang==='ru'?'Найдите на карте':currentLang==='en'?'Find on the map':'Xaritada toping'}</h3>
+    <p style="color:var(--cream);font-size:20px;font-family:'Playfair Display',serif;margin-bottom:16px;">${city.name}</p>
+    <div class="map-canvas" id="map-canvas" onclick="mapClick(event)">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.15;pointer-events:none;">
+        <svg viewBox="0 0 100 100" style="width:100%;height:100%;fill:none;stroke:var(--gold3);stroke-width:0.5;">
+          <rect x="5" y="5" width="90" height="90" rx="3"/>
+          <path d="M15,20 Q30,15 45,22 Q60,28 75,20 L85,25 L80,40 Q70,45 65,55 Q60,65 50,70 Q40,72 30,68 Q20,62 15,55 Z" fill="rgba(201,168,76,0.1)" stroke="var(--gold3)"/>
+          <text x="50" y="50" text-anchor="middle" font-size="5" fill="var(--gold3)" stroke="none">${currentLang==='ru'?'Средняя Азия':currentLang==='en'?'Central Asia':'O\'rta Osiyo'}</text>
+        </svg>
+      </div>
+      <div id="map-marker" style="display:none;"></div>
+    </div>
+    <p id="map-result" style="color:var(--text2);margin-top:12px;font-size:13px;">${currentLang==='ru'?'Нажмите на место':currentLang==='en'?'Click the location':'Joyni bosing'}</p>`;
+}
+function mapClick(e) {
+  const canvas = document.getElementById('map-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  const city = MAP_CITIES[mapAsk];
+  const dist = Math.sqrt(Math.pow(x-city.x,2) + Math.pow(y-city.y,2));
+  const marker = document.getElementById('map-marker');
+  marker.style.cssText = `display:block;position:absolute;left:${x}%;top:${y}%;width:16px;height:16px;border-radius:50%;background:var(--red);border:2px solid var(--gold);transform:translate(-50%,-50%);`;
+  const result = document.getElementById('map-result');
+  if(dist < 15) {
+    result.style.color='#2ecc71';
+    result.textContent = '✓ '+(currentLang==='ru'?'Правильно! Расстояние: '+Math.round(dist)+'%':currentLang==='en'?'Correct! Distance: '+Math.round(dist)+'%':'To\'g\'ri! Masofa: '+Math.round(dist)+'%');
+    setTimeout(() => renderMapGame(), 2000);
+  } else {
+    result.style.color='#e74c3c';
+    result.textContent = '✗ '+(currentLang==='ru'?'Мимо! Расстояние: '+Math.round(dist)+'%':currentLang==='en'?'Miss! Distance: '+Math.round(dist)+'%':'Siqib qo\'yindi! Masofa: '+Math.round(dist)+'%');
+  }
+}
+
+// ====== ADMIN ======
+function openAdmin() { document.getElementById('admin-modal').classList.add('open'); }
+function closeAdmin() { document.getElementById('admin-modal').classList.remove('open'); }
+function adminLogin() {
+  const d = getData();
+  const u = document.getElementById('admin-user').value;
+  const p = document.getElementById('admin-pass').value;
+  if(u==='admin' && p===d.password) {
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-dashboard').style.display='block';
+    loadAnalytics(); loadVideosTable(); loadLibraryTable(); loadGalleryTable();
+  } else { showNotif('❌ '+(currentLang==='ru'?'Неверный логин или пароль':currentLang==='en'?'Wrong credentials':'Noto\'g\'ri login yoki parol')); }
+}
+function adminLogout() {
+  document.getElementById('admin-login').style.display='block';
+  document.getElementById('admin-dashboard').style.display='none';
+  document.getElementById('admin-user').value='';
+  document.getElementById('admin-pass').value='';
+  closeAdmin();
+}
+function adminTab(name) {
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-content').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+function changePass() {
+  const np = document.getElementById('new-pass').value;
+  if(!np || np.length < 6) { showNotif('Parol kamida 6 ta belgi bo\'lishi kerak'); return; }
+  const d = getData(); d.password=np; saveData(d);
+  showNotif('✓ Parol saqlandi'); document.getElementById('new-pass').value='';
+}
+
+// ANALYTICS
+function loadAnalytics() {
+  const d = getData();
+  document.getElementById('a-views').textContent = d.analytics.views||0;
+  document.getElementById('a-sessions').textContent = d.analytics.sessions||0;
+  document.getElementById('a-videos').textContent = d.analytics.videoClicks||0;
+  document.getElementById('a-games').textContent = d.analytics.gamesPlayed||0;
+  const days = currentLang==='ru'?['Пн','Вт','Ср','Чт','Пт','Сб','Вс']:currentLang==='en'?['Mo','Tu','We','Th','Fr','Sa','Su']:['Du','Se','Ch','Pa','Ju','Sh','Ya'];
+  const weekly = d.analytics.weekly || [10,25,18,42,35,60,48];
+  const max = Math.max(...weekly);
+  document.getElementById('weekly-chart').innerHTML = weekly.map((v,i) => `
+    <div class="chart-row">
+      <span class="chart-label">${days[i]}</span>
+      <div class="chart-bar"><div class="chart-fill" style="width:${(v/max*100)}%"></div></div>
+      <span class="chart-val">${v}</span>
+    </div>`).join('');
+}
+function loadVideosTable() {
+  const d = getData();
+  document.getElementById('videos-table').innerHTML = d.videos.map(v=>`
+    <tr><td>${v.title}</td><td><code>${v.ytid}</code></td>
+    <td><button class="table-btn" onclick="deleteVideo(${v.id})">🗑</button></td></tr>`).join('');
+}
+function loadLibraryTable() {
+  const d = getData();
+  document.getElementById('library-table').innerHTML = d.library.map(i=>`
+    <tr><td>${i.title}</td><td>${i.type}</td><td>${i.year}</td>
+    <td><button class="table-btn" onclick="deleteLibItem(${i.id})">🗑</button></td></tr>`).join('');
+}
+function loadGalleryTable() {
+  const d = getData();
+  document.getElementById('gallery-table').innerHTML = d.gallery.map(i=>`
+    <tr><td>${i.title}</td><td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;">${i.url}</td>
+    <td><button class="table-btn" onclick="deleteGalleryItem(${i.id})">🗑</button></td></tr>`).join('');
+}
+
+// ADD/DELETE
+function addVideo() {
+  const title = document.getElementById('v-title').value.trim();
+  const url = document.getElementById('v-url').value.trim();
+  const desc = document.getElementById('v-desc').value.trim();
+  if(!title||!url) { showNotif('Sarlavha va URL kiritish shart!'); return; }
+  const ytid = getYTid(url);
+  const d = getData();
+  const newId = Math.max(0,...d.videos.map(v=>v.id))+1;
+  d.videos.push({ id:newId, title, ytid, desc, date:new Date().toISOString().split('T')[0] });
+  saveData(d);
+  document.getElementById('v-title').value=''; document.getElementById('v-url').value=''; document.getElementById('v-desc').value='';
+  loadVideosTable(); renderVideos(); animateStats();
+  showNotif('✓ Video qo\'shildi!');
+}
+function deleteVideo(id) {
+  const d = getData(); d.videos = d.videos.filter(v=>v.id!==id); saveData(d);
+  loadVideosTable(); renderVideos(); animateStats(); showNotif('Video o\'chirildi');
+}
+function addLibItem() {
+  const title = document.getElementById('l-title').value.trim();
+  const type = document.getElementById('l-type').value;
+  const url = document.getElementById('l-url').value.trim();
+  const author = document.getElementById('l-author').value.trim();
+  const year = document.getElementById('l-year').value.trim();
+  if(!title) { showNotif('Sarlavha kiritish shart!'); return; }
+  const d = getData();
+  const newId = Math.max(0,...d.library.map(i=>i.id))+1;
+  d.library.push({ id:newId, title, type, url:url||'#', author, year });
+  saveData(d);
+  ['l-title','l-url','l-author','l-year'].forEach(id=>{ document.getElementById(id).value=''; });
+  loadLibraryTable(); renderLibrary(); animateStats();
+  showNotif('✓ Hujjat qo\'shildi!');
+}
+function deleteLibItem(id) {
+  const d = getData(); d.library = d.library.filter(i=>i.id!==id); saveData(d);
+  loadLibraryTable(); renderLibrary(); animateStats(); showNotif('Hujjat o\'chirildi');
+}
+function addGalleryItem() {
+  const title = document.getElementById('g-title').value.trim();
+  const url = document.getElementById('g-url').value.trim();
+  if(!title||!url) { showNotif('Nom va URL kiritish shart!'); return; }
+  const d = getData();
+  const newId = Math.max(0,...(d.gallery.length?d.gallery.map(i=>i.id):[0]))+1;
+  d.gallery.push({ id:newId, title, url });
+  saveData(d);
+  document.getElementById('g-title').value=''; document.getElementById('g-url').value='';
+  loadGalleryTable(); renderGallery();
+  showNotif('✓ Rasm qo\'shildi!');
+}
+function deleteGalleryItem(id) {
+  const d = getData(); d.gallery = d.gallery.filter(i=>i.id!==id); saveData(d);
+  loadGalleryTable(); renderGallery(); showNotif('Rasm o\'chirildi');
+}
+
+// NOTIF
+function showNotif(msg) {
+  const existing = document.querySelector('.notif');
+  if(existing) existing.remove();
+  const n = document.createElement('div');
+  n.className='notif'; n.textContent=msg;
+  document.body.appendChild(n);
+  setTimeout(() => n.remove(), 3000);
+}
+
+// CLOSE ON BACKDROP
+document.getElementById('admin-modal').addEventListener('click', function(e) { if(e.target===this) closeAdmin(); });
+document.getElementById('lightbox').addEventListener('click', function(e) { if(e.target===this) closeLightbox(); });
+document.getElementById('game-modal').addEventListener('click', function(e) { if(e.target===this) closeGame(); });
+
+// KEYBOARD
+document.addEventListener('keydown', e => { if(e.key==='Escape') { closeAdmin(); closeLightbox(); closeGame(); closeMobileNav(); } });
+</script>
+</body>
+</html>
